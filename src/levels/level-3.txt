@@ -1,0 +1,211 @@
+level-num: 3
+background-sprite: images/backgrounds/background-forest-resized.png
+end-cord: 17650
+time-limit: 180
+obstacles:
+  platform:
+    x-cord: 1530
+    y-cord: 800
+    length: 3
+  platform:
+    x-cord: 1830
+    y-cord: 700
+    length: 4
+  platform:
+    x-cord: 2260
+    y-cord: 800
+    length: 5
+  platform:
+    x-cord: 3500
+    y-cord: 872
+    length: 1
+  platform:
+    x-cord: 3500
+    y-cord: 898
+    length: 1
+  platform:
+    x-cord: 3500
+    y-cord: 924
+    length: 1
+  platform:
+    x-cord: 3500
+    y-cord: 950
+    length: 1
+  platform:
+    x-cord: 3710
+    y-cord: 700
+    length: 4
+  platform:
+    x-cord: 4100
+    y-cord: 872
+    length: 1
+  platform:
+    x-cord: 4100
+    y-cord: 898
+    length: 1
+  platform:
+    x-cord: 4100
+    y-cord: 924
+    length: 1
+  platform:
+    x-cord: 4100
+    y-cord: 950
+    length: 1
+  platform:
+    x-cord: 4360
+    y-cord: 600
+    length: 5
+  platform:
+    x-cord: 5200
+    y-cord: 800
+    length: 4
+  platform:
+    x-cord: 5750
+    y-cord: 630
+    length: 5
+  platform:
+    x-cord: 7520
+    y-cord: 800
+    length: 2
+  platform:
+    x-cord: 7740
+    y-cord: 680
+    length: 2
+  platform:
+    x-cord: 7960
+    y-cord: 560
+    length: 2
+  platform:
+    x-cord: 8600
+    y-cord: 750
+    length: 6
+  platform:
+    x-cord: 9500
+    y-cord: 800
+    length: 8
+  platform:
+    x-cord: 10330
+    y-cord: 650
+    length: 6
+  platform:
+    x-cord: 9640
+    y-cord: 480
+    length: 6
+  platform:
+    x-cord: 9200
+    y-cord: 280
+    length: 4
+  platform:
+    x-cord: 9840
+    y-cord: 220
+    length: 4
+  platform:
+    x-cord: 10430
+    y-cord: 220
+    length: 6
+  platform:
+    x-cord: 12350
+    y-cord: 800
+    length: 7
+  platform:
+    x-cord: 12900
+    y-cord: 600
+    length: 4
+  platform:
+    x-cord: 13080
+    y-cord: 420
+    length: 5
+  platform:
+    x-cord: 12480
+    y-cord: 220
+    length: 7
+  platform:
+    x-cord: 15200
+    y-cord: 220
+    length: 8
+  platform:
+    x-cord: 13780
+    y-cord: 620
+    length: 4
+  platform:
+    x-cord: 14480
+    y-cord: 670
+    length: 4
+  platform:
+    x-cord: 15120
+    y-cord: 580
+    length: 4
+  platform:
+    x-cord: 15770
+    y-cord: 620
+    length: 4
+  platform:
+    x-cord: 16250
+    y-cord: 550
+    length: 3
+  platform:
+    x-cord: 16100
+    y-cord: 260
+    length: 3
+  platform:
+    x-cord: 16450
+    y-cord: 350
+    length: 3
+
+collectibles:
+  phone-piece:
+    type: KEYPAD
+    x-cord: 15425
+    y-cord: 220
+enemies:
+  police:
+    x-cord: 1970
+    y-cord: 700
+  police:
+    x-cord: 2110
+    y-cord: 980
+  police:
+    x-cord: 3160
+    y-cord: 980
+  police:
+    x-cord: 3690
+    y-cord: 980
+  police:
+    x-cord: 4560
+    y-cord: 600
+  police:
+    x-cord: 5840
+    y-cord: 630
+  police:
+    x-cord: 6300
+    y-cord: 980
+  police:
+    x-cord: 8850
+    y-cord: 750
+  police:
+    x-cord: 9390
+    y-cord: 980
+  police:
+    x-cord: 9900
+    y-cord: 800
+  police:
+    x-cord: 9700
+    y-cord: 480
+  police:
+    x-cord: 10490
+    y-cord: 220
+  scientist:
+    x-cord: 10720
+    y-cord: 220
+  police:
+    x-cord: 12000
+    y-cord: 980
+  scientist:
+    x-cord: 13200
+    y-cord: 420
+  scientist:
+    x-cord: 12580
+    y-cord: 220
+  scientist:
+    x-cord: 15480
+    y-cord: 220

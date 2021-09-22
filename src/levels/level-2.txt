@@ -1,0 +1,295 @@
+level-num: 2
+background-sprite: images/backgrounds/background-town-resized.png
+end-cord: 21900
+time-limit: 240
+obstacles:
+  platform:
+    x-cord: 1920
+    y-cord: 800
+    length: 5
+  platform:
+    x-cord: 2320
+    y-cord: 700
+    length: 3
+  platform:
+    x-cord: 2700
+    y-cord: 700
+    length: 5
+  platform:
+    x-cord: 2900
+    y-cord: 500
+    length: 3
+  platform:
+    x-cord: 3000
+    y-cord: 400
+    length: 5
+  platform:
+    x-cord: 3550
+    y-cord: 700
+    length: 6
+  platform:
+    x-cord: 4000
+    y-cord: 690
+    length: 5
+  platform:
+    x-cord: 4200
+    y-cord: 500
+    length: 10
+  platform:
+    x-cord: 4500
+    y-cord: 700
+    length: 2
+  platform:
+    x-cord: 4800
+    y-cord: 450
+    length: 3
+  platform:
+    x-cord: 5200
+    y-cord: 800
+    length: 4
+  platform:
+    x-cord: 5550
+    y-cord: 650
+    length: 2
+  platform:
+    x-cord: 5800
+    y-cord: 400
+    length: 2
+  platform:
+    x-cord: 6300
+    y-cord: 600
+    length: 5
+  platform:
+    x-cord: 6900
+    y-cord: 700
+    length: 10
+  platform:
+    x-cord: 7700
+    y-cord: 500
+    length: 3
+  platform:
+    x-cord: 8000
+    y-cord: 500
+    length: 1
+  platform:
+    x-cord: 8150
+    y-cord: 400
+    length: 2
+  platform:
+    x-cord: 4350
+    y-cord: 760
+    length: 2
+  platform:
+    x-cord: 8500
+    y-cord: 800
+    length: 2
+  platform:
+    x-cord: 9000
+    y-cord: 800
+    length: 5
+  platform:
+    x-cord: 5600
+    y-cord: 800
+    length: 5
+  platform:
+    x-cord: 9250
+    y-cord: 600
+    length: 3
+  platform:
+    x-cord: 9500
+    y-cord: 700
+    length: 3
+  platform:
+    x-cord: 10000
+    y-cord: 800
+    length: 3
+  platform:
+    x-cord: 10500
+    y-cord: 800
+    length: 2
+  platform:
+    x-cord: 10800
+    y-cord: 600
+    length: 2
+  platform:
+    x-cord: 11500
+    y-cord: 750
+    length: 4
+  platform:
+    x-cord: 11900
+    y-cord: 500
+    length: 2
+  platform:
+    x-cord: 12500
+    y-cord: 800
+    length: 6
+  platform:
+    x-cord: 12650
+    y-cord: 600
+    length: 8
+  platform:
+    x-cord: 12800
+    y-cord: 400
+    length: 10
+  platform:
+    x-cord: 13000
+    y-cord: 200
+    length: 2
+  platform:
+    x-cord: 13200
+    y-cord: 200
+    length: 2
+  platform:
+    x-cord: 13300
+    y-cord: 200
+    length: 1
+  platform:
+    x-cord: 13500
+    y-cord: 200
+    length: 1
+  platform:
+    x-cord: 13700
+    y-cord: 400
+    length: 10
+  platform:
+    x-cord: 14300
+    y-cord: 600
+    length: 10
+  platform:
+    x-cord: 15000
+    y-cord: 800
+    length: 10
+  platform:
+    x-cord: 15500
+    y-cord: 600
+    length: 5
+  platform:
+    x-cord: 16000
+    y-cord: 800
+    length: 10
+  platform:
+    x-cord: 16700
+    y-cord: 500
+    length: 10
+  platform:
+    x-cord: 16600
+    y-cord: 600
+    length: 5
+  platform:
+    x-cord: 17000
+    y-cord: 500
+    length: 5
+  platform:
+    x-cord: 17500
+    y-cord: 600
+    length: 3
+  platform:
+    x-cord: 18250
+    y-cord: 800
+    length: 10
+  platform:
+    x-cord: 19000
+    y-cord: 700
+    length: 5
+  platform:
+  	x-cord: 19400
+  	y-cord: 700
+  	length: 5
+  platform:
+  	x-cord: 20000
+  	y-cord: 800
+  	length: 10
+  platform:
+  	x-cord: 20200
+  	y-cord: 700
+  	length: 2
+  platform:
+  	x-cord: 20400
+  	y-cord: 600
+  	length: 2
+  platform: 
+  	x-cord: 20600
+  	y-cord: 500
+  	length: 2
+  platform:
+  	x-cord: 20800
+  	y-cord: 400
+  	length: 2
+collectibles:
+  phone-piece:
+    type: CHASSIS
+    x-cord: 16660
+    y-cord: 500
+enemies:
+  police:
+    x-cord: 2000
+    y-cord: 800
+  police:
+    x-cord: 3000
+    y-cord: 980
+  police:
+    x-cord: 4200
+    y-cord: 980
+  police:
+    x-cord: 6900
+    y-cord: 980
+  police:
+    x-cord: 7200
+    y-cord: 700
+  police:
+    x-cord: 4500
+    y-cord: 700
+  police:
+    x-cord: 9550
+    y-cord: 700
+  police:
+    x-cord: 12600
+    y-cord: 800
+  police:
+    x-cord: 15300
+    y-cord: 800
+  police:
+    x-cord: 16250
+    y-cord: 800
+  police:
+    x-cord: 14500
+    y-cord: 600
+  police:
+    x-cord: 18700
+    y-cord: 800
+  scientist: 
+    x-cord: 9400
+    y-cord: 600
+  police:
+    x-cord: 16660
+    y-cord: 600
+  police: 
+  	x-cord: 19600 
+  	y-cord: 700
+  police:
+  	x-cord: 13000
+  	y-cord: 800
+  scientist:
+    x-cord: 16700
+    y-cord: 800
+  scientist:
+    x-cord: 16700
+    y-cord: 500
+  scientist: 
+    x-cord: 5650
+    y-cord: 800
+  scientist:
+    x-cord: 3200
+    y-cord: 400
+  scientist:
+    x-cord: 6500
+    y-cord: 600
+  scientist:
+  	x-cord: 20400
+  	y-cord: 600
+  scientist:
+  	x-cord: 20600
+  	y-cord: 500
+  scientist:
+  	x-cord: 20800
+  	y-cord: 400
