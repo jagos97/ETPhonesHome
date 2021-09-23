@@ -15,12 +15,5 @@ out/production/et-phones-home-text/etphoneshome/entities/characters/Character.cl
 .idea/modules.xml
 .idea/misc.xml
 out/production/et-phones-home-text/etphoneshome/entities/enemies/Police.class
-.idea/modules.xml
-.idea/misc.xml
-.idea/workspace.xml
-out/
-.idea/dictionaries/Stephen.xml
-.metadata/
-.recommenders/
-*.ini
-.idea/
+out/production/
+.idea/uiDesigner.xml

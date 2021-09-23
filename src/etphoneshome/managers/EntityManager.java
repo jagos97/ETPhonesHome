@@ -1,6 +1,5 @@
 package etphoneshome.managers;
 
-import etphoneshome.UILauncher;
 import etphoneshome.entities.characters.Character;
 import etphoneshome.entities.characters.ET;
 import etphoneshome.entities.enemies.Enemy;
@@ -11,7 +10,6 @@ import etphoneshome.objects.Location;
 import etphoneshome.objects.Obstacle;
 import etphoneshome.objects.Platform;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -24,58 +22,74 @@ import java.util.Random;
  */
 public class EntityManager {
 
-    private int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    private ObstacleManager obstacleManager;
 
+    /**
+     * character associated with {@code EntityManager}
+     */
+    private Character character;
     /**
      * List containing all of the characters in the game
      */
     private final List<Enemy> enemies = new ArrayList<>();
 
     /**
-     * Adds the given {@code Enemy} to the list enemies.
+     * Constructor for the class
      *
-     * @param enemy the {@code Enemy} that is added to the list.
+     * @param character gives EntityManager the character associated with EntityManager
+     * @param obstacleManager ObstacleManager
+     */
+    public EntityManager(ObstacleManager obstacleManager, Character character) {
+        this.character = character;
+        this.obstacleManager = obstacleManager;
+    }
+
+    /**
+     * Adds the given enemy associated with {@code enemy} to the list enemies.
+     *
+     * @param enemy the {@code enemy} that is added to the list.
      */
     public void addEnemy(Enemy enemy) {
         enemies.add(enemy);
     }
 
     /**
-     * Method to remove the given {@code Enemy} from the list enemies.
+     * Method to remove the given enemy associated with {@code enemy} from the list enemies.
      *
-     * @param enemy the {@code Enemy} that is removed from the list.
+     * @param enemy the {@code enemy} that is removed from the list.
      */
     public void removeEnemy(Enemy enemy) {
         enemies.remove(enemy);
     }
 
     /**
-     * Method to return the list.
+     * Method to return the list {@code enemies}.
      *
-     * @return The current list.
+     * @return The current list {@code enemies}.
      */
     public List<Enemy> getEnemyList() {
         return this.enemies;
     }
 
     /**
-     * Spawns {@code Enemy} in random locations around the map
+     * Method to print out enemies in random locations
      *
-     * @param amount The amount of {@code Enemy} to be spawned
+     * @param amount The amount of entities to be spawned
      */
-    public void spawnRandomEntities(double amount) {
+    public void spawnRandomEntities(int amount) {
+
         Random random = new Random();
-        int xCord = UILauncher.getGraphicsRepainter().WIDTH / 2 + 70;
-        for (double i = 0; i < amount; i++) {
-            xCord = random.nextInt(1920) + (int) new Police().getLeftEntitySprite().getWidth() + xCord;
-            double type = random.nextInt(2);
+        int xCord = random.nextInt(10) + 1;
+        for (int i = 0; i < amount; i++) {
+            xCord += random.nextInt(10) + 1;
+            int type = random.nextInt(1);
             Enemy enemy;
             if (type == 0) {
-                enemy = new Police(new Location(xCord, UILauncher.getGraphicsRepainter().HEIGHT - 100 - (int) new Police().getLeftEntitySprite().getHeight()));
+                enemy = new Police();
             } else {
-                enemy = new Scientist(new Location(xCord, UILauncher.getGraphicsRepainter().HEIGHT - 100 - (int) new Police().getLeftEntitySprite().getHeight()));
+                enemy = new Scientist();
             }
-            enemy.setLocation(new Location(xCord, UILauncher.getGraphicsRepainter().HEIGHT - 100 - (int) new Police().getLeftEntitySprite().getHeight()));
+            enemy.setLocation(new Location(xCord, 0));
             this.addEnemy(enemy);
         }
     }
@@ -91,19 +105,19 @@ public class EntityManager {
         for (Enemy enemy : level.getEnemies()) {
             this.enemies.add(enemy);
             Location location = enemy.getLocation();
-            for (Obstacle obstacle : UILauncher.getObstacleManager().getObstacleList()) {
+            for (Obstacle obstacle : obstacleManager.getObstacleList()) {
                 Platform platform = (Platform) obstacle;
-                if (location.getXcord() > platform.getLocation().getXcord() && location.getXcord() < platform.getLocation().getXcord() + platform.getRealLength() && location.getYcord() + (int) enemy.getRightEntitySprite().getHeight() == platform.getLocation().getYcord()) {
+                if (location.getXcord() > platform.getLocation().getXcord() && location.getXcord() < platform.getLocation().getXcord() + platform.getLength() && location.getYcord() == platform.getLocation().getYcord() + 1) {
                     enemy.setStandingOnPlatform(platform);
                     continue enemyloop;
                 }
             }
 
-            while (location.getYcord() - enemy.getRightEntitySprite().getHeight() < UILauncher.getGraphicsRepainter().HEIGHT - 100) {
-                location.setYcord(location.getYcord() + 1);
-                for (Obstacle obstacle : UILauncher.getObstacleManager().getObstacleList()) {
+            while (location.getYcord() > 0) {
+                location.setYcord(location.getYcord() - 1);
+                for (Obstacle obstacle : obstacleManager.getObstacleList()) {
                     Platform platform = (Platform) obstacle;
-                    if (location.getXcord() > platform.getLocation().getXcord() && location.getXcord() < platform.getLocation().getXcord() + platform.getRealLength() && location.getYcord() + (int) enemy.getRightEntitySprite().getHeight() == platform.getLocation().getYcord()) {
+                    if (location.getXcord() > platform.getLocation().getXcord() && location.getXcord() < platform.getLocation().getXcord() + platform.getLength() && location.getYcord() == platform.getLocation().getYcord() + 1) {
                         enemy.setLocation(location);
                         enemy.setStandingOnPlatform(platform);
                         continue enemyloop;
@@ -111,8 +125,8 @@ public class EntityManager {
                 }
             }
             enemy.setLocation(location);
-            if (location.getYcord() - enemy.getRightEntitySprite().getHeight() > UILauncher.getGraphicsRepainter().HEIGHT - 100) {
-                enemy.setLocation(new Location(location.getXcord(), UILauncher.getGraphicsRepainter().HEIGHT - 100 + (int) enemy.getRightEntitySprite().getHeight()));
+            if (location.getYcord() < 0) {
+                enemy.setLocation(new Location(location.getXcord(), 0));
             }
         }
     }
@@ -130,7 +144,7 @@ public class EntityManager {
         Enemy testEnemy = new Police();
         // creates a character for the entityManager constructor
         Character testCharacter = new ET();
-        EntityManager entityManager = new EntityManager();
+        EntityManager entityManager = new EntityManager(new ObstacleManager(), testCharacter);
         //spawns random enemies so we can test our methods
         entityManager.spawnRandomEntities(10);
         System.out.println("10 enemies should have spawned. Number of enemies: " + entityManager.enemies.size());
@@ -140,7 +154,6 @@ public class EntityManager {
         System.out.println("List should contain 10 enemies. Number of enemies: " + entityManager.enemies.size());
         entityManager.getEnemyList();
     }
-
 
 }
 

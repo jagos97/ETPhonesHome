@@ -1,217 +1,250 @@
 package etphoneshome.listeners;
 
+import etphoneshome.UILauncher;
 import etphoneshome.entities.characters.Character;
-import etphoneshome.managers.*;
-import etphoneshome.objects.Direction;
-import etphoneshome.objects.Flask;
-import etphoneshome.objects.Velocity;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyEvent;
+import etphoneshome.entities.characters.ET;
+import etphoneshome.entities.enemies.Enemy;
+import etphoneshome.managers.EntityManager;
+import etphoneshome.managers.ObstacleManager;
+import etphoneshome.objects.Location;
+import etphoneshome.objects.Obstacle;
+import etphoneshome.objects.Platform;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 /**
  * This class gets input from the user and updates the character based on that input
+ * nextMove gets input from the user on which direction they would like to move 
+ * and processInput takes that input and uses it to move the character and prints updates based on it
  */
 
 public class InputListener {
 
     /**
-     * character associated with {@code InputLIstener}
+     * entityManager object, received from UILauncher
+     */
+    private final EntityManager entityManager;
+
+    /**
+     * obstacleManager object used to alllow jumping onto platforms
+     */
+    private final ObstacleManager obstacleManager;
+
+    /**
+     * character associated with {@code InputListener}
      */
     private Character character;
 
     /**
-     * Stores backgroundManager to be used to update background velocity/location
+     * location associated with the character
      */
-    private BackgroundManager backgroundManager;
+    private Location location;
 
-    /**
-     * Stores floorManager to be used to update floor velocity/location
-     */
-    private FloorManager floorManager;
-
-    /**
-     * Stores gameManager to be used to calculate ground level
-     */
-    private GameManager gameManager;
-
-    /**
-     * Stores levelManager used to check if level is complete
-     */
-    private LevelManager levelManager;
-
-    /**
-     * Used to update the velocity of flasks (gravity)
-     */
-    private FlaskManager flaskManager;
-
-    /**
-     * Used to update direction of character animation
-     */
-    private AnimationManager animationManager;
 
     /**
      * Constructor for the class
      *
-     * @param character         gives InputListener the character associated with InputListener
-     * @param backgroundManager stores the backgroundManager in order to use it later
-     * @param gameManager       stores the gameManager object used to check the ground level
-     * @param floorManager		stores the floormanager in order to move the floor
-     * @param levelManager		stores the levelManager in order to run cecks
-     * @param flaskManager   	stores the flasks to move them
-     * @param animationManager  stores the animations to change sprites
+     * @param character       gives InputListener the character associated with InputListener
+     * @param entityManager   entityManager used to jump and kill on enemies
+     * @param obstacleManager obstacleManager used to jump onto platforms
      */
-    public InputListener(Character character, BackgroundManager backgroundManager, FloorManager floorManager, GameManager gameManager, LevelManager levelManager, FlaskManager flaskManager, AnimationManager animationManager) {
-    	this.character = character;
-        this.backgroundManager = backgroundManager;
-        this.floorManager = floorManager;
-        this.gameManager = gameManager;
-        this.levelManager = levelManager;
-        this.flaskManager = flaskManager;
-        this.animationManager = animationManager;
+    public InputListener(Character character, EntityManager entityManager, ObstacleManager obstacleManager) {
+        this.character = character;
+        this.location = character.getLocation();
+        this.entityManager = entityManager;
+        this.obstacleManager = obstacleManager;
+    }
+
+
+    /**
+     * Uses method nextMove to get input from the user and processes the input and updates the character based on it
+     */
+    public void processInput() {
+
+        char move = nextMove();
+        Platform standingOnplatform = character.getStandingOnPlatform();
+
+        // movement to the left
+        if (move == 'a') {
+            int initialX1 = location.getXcord();
+            location.setXcord(initialX1 - 1);
+            character.setLocation(location);
+            int newX = initialX1 - 1;
+            if (standingOnplatform != null && !(newX >= standingOnplatform.getLocation().getXcord() && newX <= standingOnplatform.getLocation().getXcord() + standingOnplatform.getLength())) {
+                location.setYcord(0);
+                character.setLocation(location);
+                System.out.println("You have walked off the platform and have returned to the ground");
+                character.setStandingOnPlatform(null);
+            }
+
+            // movement up
+        } else if (move == 'w') {
+            int characterXCord = character.getLocation().getXcord();
+            int characterYCord = character.getLocation().getYcord();
+            for (Obstacle obstacle : this.obstacleManager.getObstacleList()) {
+                if (obstacle instanceof Platform) {
+                    Platform platform = (Platform) obstacle;
+                    if (characterXCord >= platform.getLocation().getXcord() && characterXCord <= platform.getLocation().getXcord() + platform.getLength() && platform.getLocation().getYcord() > characterYCord) {
+                        location.setYcord(platform.getLocation().getYcord() + 1);
+                        System.out.println("You have moved onto the platform above you");
+                        character.setLocation(location);
+                        character.setStandingOnPlatform(platform);
+                        return;
+                    }
+                }
+            }
+
+            Enemy enemy = null;
+            for (Enemy loopEnemy : this.entityManager.getEnemyList()) {
+                if (loopEnemy.getLocation().getYcord() == location.getYcord()) {
+                    if (loopEnemy.getLocation().getXcord() - location.getXcord() == 1) {
+                        System.out.println("There was an enemy in front of you, you jumped on his head and now he is dead (you moved 1 right)");
+                        UILauncher.getSound().playEnemyDeath();
+                        enemy = loopEnemy;
+                        location.addX(1);
+                        break;
+                    } else if (loopEnemy.getLocation().getXcord() - location.getXcord() == -1) {
+                        System.out.println("There was an enemy behind you, you jumped on his head and now he is dead (you moved 1 left)");
+                        UILauncher.getSound().playEnemyDeath();
+                        enemy = loopEnemy;
+                        location.addX(-1);
+                        break;
+                    }
+                }
+            }
+
+            if (enemy == null) {
+                System.out.println("You jump, but there are no enemies nearby to kill,\nyou land back down on the ground");
+            } else {
+                enemy.setIsDead(true);
+                entityManager.removeEnemy(enemy);
+            }
+
+            // movement down
+        } else if (move == 's') {
+
+            if (character.getLocation().getYcord() > 0) {
+                location.setYcord(0);
+                System.out.println("You have lowered down off the platform onto the ground");
+                character.setStandingOnPlatform(null);
+            }
+
+            // movement to the right
+        } else {
+            int initialX2 = location.getXcord();
+            location.setXcord(initialX2 + 1);
+            character.setLocation(location);
+            int newX = initialX2 + 1;
+            if (standingOnplatform != null && !(newX >= standingOnplatform.getLocation().getXcord() && newX <= standingOnplatform.getLocation().getXcord() + standingOnplatform.getLength())) {
+                location.setYcord(0);
+                character.setLocation(location);
+                System.out.println("You have walked off the platform and have returned to the ground");
+            }
+        }
+
+        character.setLocation(location);
+
     }
 
     /**
-     * Sets the character of {@code InputListener}
+     * Gets the direction the user wants to move. If user enters invalid entry it will prompt them to try again
      *
-     * @param character character of {@code InputListener}
+     * @return direction the user wants to move
      */
-    public void setCharacter(Character character) {
-        this.character = character;
+
+    private char nextMove() {
+
+        //sets basic values
+        char move = 'q';
+        boolean validmove = false;
+        int yCord = location.getYcord();
+        int xCord = location.getXcord();
+
+        //while the move is invalid it will loop until it is
+        while (validmove != true) {
+            Scanner reader = new Scanner(System.in);
+            try {
+                System.out.print("Which direction would you like to move?: ");
+                String choice = reader.next();
+                if (choice.length() > 1) {
+                    System.out.println("Please select a valid direction ('w','a','s','d') ");
+                    continue;
+                }
+                move = choice.charAt(0);
+                ;
+                if (move == 'a' || move == 'w' || move == 'd' || move == 's') {
+                    if (move != 's' && move != 'a') {
+                        validmove = true;
+
+                        //making sure user doesn't go below ground
+                    } else if (move == 's' && yCord != 0) {
+                        validmove = true;
+
+                        //making sure user doesn't exit the leave game field on the left
+                    } else if (move == 'a' && xCord != 0) {
+                        validmove = true;
+
+                        //if user tries to go below ground
+                    } else if (move == 's' && yCord == 0) {
+                        System.out.println("Cannot move down. Try another direction.");
+
+                        //if user tries to leave the game field
+                    } else if (move == 'a' && xCord == 0) {
+                        System.out.println("Cannot move left. Try another direction");
+                    }
+                } else {
+                    System.out.println("Please select a valid direction ('w','a','s','d') ");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please enter 'a' for left, 'w' for up, 's' for down and 'd' for right ");
+                reader.next();
+            }
+        }
+        return move;
+
     }
 
     public static void main(String[] args) {
-        // add new testing code
-    }
 
+        Character tester = new ET();
+        EntityManager entityManager = new EntityManager(new ObstacleManager(), tester);
+        Location locate = tester.getLocation();
+        boolean tryagain = true;
+        Scanner reader = new Scanner(System.in);
+        InputListener input = new InputListener(tester, entityManager, new ObstacleManager());
+        entityManager.spawnRandomEntities(20);
 
-    /**
-     * Generate {@code EventHandler} for the key pressed down event
-     *
-     * @return {@code EventHandler} for the key pressed down event
-     */
-    public EventHandler<KeyEvent> getKeyPressedEvent() {
+        while (tryagain) {
+            int locationX = locate.getXcord();
+            int locationY = locate.getYcord();
 
-        return new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent e) {
-                if (!levelManager.isLevelComplete()) {
-                    String input = e.getText().toLowerCase();
-                    if (input.equals("w") || input.equals("up")) {
-                        character.setHoldingUp(true);
-                    }
-                    if (input.equals("a") || input.equals("left")) {
-                        character.setHoldingLeft(true);
-                    }
-                    if (input.equals("d") || input.equals("right")) {
-                        character.setHoldingRight(true);
-                    }
-                }
+            input.processInput();
+            if (locate.getXcord() == locationX + 1) {
+                System.out.println("If you moved right or jumped and killed enemy to right then test was successful");
+            } else if (locate.getXcord() == locationX - 1) {
+                System.out.println("if you moved left or jumped and killed enemy to left then test successful");
+            } else {
+                System.out.println("if you jumped and no enemy nearby then test sucessful");
             }
-        };
-    }
+            // TODO: TEST IF GOES ONTO PLATFORM
+            // TODO: TEST IF LOWERS THRU PLATFORM ONTO GROUND OR LOWER PLATFORM?
 
-    /**
-     * Generate {@code EventHandler} for the key released event
-     *
-     * @return {@code EventHandler} for the key released event
-     */
-    public EventHandler<KeyEvent> getKeyReleasedEvent() {
-
-        return new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent e) {
-                if (!levelManager.isLevelComplete()) {
-                    String input = e.getText().toLowerCase();
-                    if (input.equals("w")) {
-                        character.setHoldingUp(false);
-                    }
-                    if (input.equals("a")) {
-                        character.setHoldingLeft(false);
-                    }
-                    if (input.equals("d")) {
-                        character.setHoldingRight(false);
-                    }
-                }
+            System.out.print("would you like to try again? Enter n if you would like to stop.: ");
+            String choice = reader.next();
+            char move = choice.charAt(0);
+            if (choice.length() == 1 && move == 'n') {
+                tryagain = false;
             }
-        };
+
+        }
+        reader.close();
+        System.exit(0);
     }
 
-    /**
-     * Update the character's velocity based on the tick of the game
-     */
-    public void updateVelocities() {
-        Velocity velocity = this.character.getVelocity();
-
-        //gets direction the character is facing
-        if (velocity.getHorizontalVelocity() > 0) {
-            if (!this.character.isFacingRight()) {
-                animationManager.flipCharacterAnimationFrames(Direction.EAST);
-            }
-            this.character.setFacingRight(true);
-        } else if (velocity.getHorizontalVelocity() < 0) {
-            if (this.character.isFacingRight()) {
-                animationManager.flipCharacterAnimationFrames(Direction.WEST);
-            }
-            this.character.setFacingRight(false);
-        }
-
-        if (this.character.isHoldingRight() && velocity.getHorizontalVelocity() >= 0 && velocity.getHorizontalVelocity() <= 10) {
-            //changes velocity if moving right
-            velocity.changeHorizontalVelocity(1);
-        } else if (!this.character.isHoldingRight() && velocity.getHorizontalVelocity() > 0) {
-            double newVelocity = velocity.getHorizontalVelocity() - 1 < 0 ? 0 : velocity.getHorizontalVelocity() - 1;
-            velocity.setHorizontalVelocity(newVelocity);
-        }
-
-        if (this.character.isHoldingLeft() && velocity.getHorizontalVelocity() <= 0 && velocity.getHorizontalVelocity() >= -10) {
-            //changes velocity is moving left
-            velocity.changeHorizontalVelocity(-1);
-        } else if (!this.character.isHoldingLeft() && velocity.getHorizontalVelocity() < 0) {
-            double newVelocity = velocity.getHorizontalVelocity() + 1 > 0 ? 0 : velocity.getHorizontalVelocity() + 1;
-            velocity.setHorizontalVelocity(newVelocity);
-        }
-
-        // gravity
-        if (this.character.isJumping()) {
-            velocity.changeVerticalVelocity(1);
-        }
-
-        // jumping
-        if (this.character.isHoldingUp() && !character.isJumping()) {
-            this.character.setJumping(true);
-            velocity.setVerticalVelocity(-20);
-        }
-
-        //move floor background and flasks
-        this.updateBackgroundVelocity();
-        this.updateFloorVelocity();
-        this.updateFlaskVelocities();
-
-    }
-
-    /**
-     * changes the velocity of the current flasks
-     */
-    public void updateFlaskVelocities() {
-        for (Flask flask : this.flaskManager.getFlaskList()) {
-            flask.getVelocity().changeVerticalVelocity(1);
-        }
-    }
-
-    /**
-     * moves the background of the stage
-     */
-    private void updateBackgroundVelocity() {
-        backgroundManager.getBackgroundVelocity().setHorizontalVelocity(this.character.getVelocity().getHorizontalVelocity() / -2.0);
-    }
-
-    /**
-     * moves the background of the stage
-     */
-    private void updateFloorVelocity() {
-        floorManager.getFloorVelocity().setHorizontalVelocity(this.character.getVelocity().getHorizontalVelocity() / -1.0);
-    }
 }
+
+
 
 
 

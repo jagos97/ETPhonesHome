@@ -1,11 +1,9 @@
-/**
- * 
- */
 package etphoneshome.managers;
+
 
 import java.util.ArrayList;
 
-import etphoneshome.player.Player;
+import etphoneshome.objects.Player;
 
 
 /**

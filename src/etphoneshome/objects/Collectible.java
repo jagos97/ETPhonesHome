@@ -1,175 +1,86 @@
 package etphoneshome.objects;
 
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.image.Image;
-
-
 /**
- * This class is a parent class for Anything that can be picked up by ET for score or progressing in the game
- * Parent class for {@code ReesesPieces} and {@code PhonePiece}
- * using getters and setters youn get and set the width,height, image, location and hitbox
+ * This class is the parent class of ReesesPieces and PhonePieces. This class will be able to get and set the Location
+ * of the Collectible.
  */
 public abstract class Collectible {
 
     /**
-     * size of the {@code Collectible}
-     */
-    private final static int WIDTH = 40;
-    private final static int HEIGHT = 40;
-
-
-    JFXPanel jfxPanel = new JFXPanel();  //needed to pass images to subclasses
-
-    /*
-     * array of the images
-     */
-    private String[] sprites = new String[3];
-
-    /**
-     * image of the collectible
-     */
-    private Image theImage;
-
-    /**
-     * Location associated with the {@code Collectible}
+     * Location associated with {@code Collectible}
      */
     private Location location;
+
 
     /**
      * Hitbox associated with the {@code Collectible}
      */
     private Hitbox hitbox;
 
-
     /**
-     * Empty constructor
+     * empty constructor
      */
     public Collectible() {
 
     }
 
     /**
-     * Constructor sets the location and hitbox of the collectible
+     * Constructor that sets the location of the {@code Collectible}
      *
-     * @param location location associated with the {@code Collectible}
+     * @param location location assoicated with {@code Collectible}
      */
     public Collectible(Location location) {
-        this.setLocation(location);
-    }
-
-    /**
-     * Sets location for {@code Collectible}
-     *
-     * @param location new location
-     */
-    public void setLocation(Location location) {
-        this.location = location;
+        setLocation(location);
         if (this.getHitbox() != null) {
-            this.hitbox.setLocation(location);
+            this.hitbox = new Hitbox(location, 1, 1);
         }
     }
 
     /**
-     * returns the location associated with {@code Collectible}
+     * Set Location of the Collectible
      *
-     * @return the location of {@code Collectible}
+     * @param location new location of the {@code COollectible}
+     */
+    public void setLocation(Location location) {
+        this.location = location;
+        this.hitbox = new Hitbox(location, 1, 1);
+    }
+
+    /**
+     * returns a copy of the location of the {@code Collectible}
+     *
+     * @return copy of the Location
      */
     public Location getLocation() {
-        return this.location;
+        return new Location(this.location.getXcord(), this.location.getYcord());
     }
 
     /**
-     * sets hitbox associated with {@code Collectible}
+     * returns a copy of the hitbox of the {@code Collectible}
      *
-     * @param hitbox new hitbox associated with the {@code Collectible}
-     */
-    public void setHitbox(Hitbox hitbox) {
-        this.hitbox = hitbox;
-    }
-
-    /**
-     * returns hitbox associated with the {@code Collectible}
-     *
-     * @return this hitbox associated with {@code Collectible}
+     * @return a copy of the hitbox associated with {@code Collectible}
      */
     public Hitbox getHitbox() {
-        return this.hitbox;
+        return new Hitbox(this.location, 1, 1);
     }
-
+    
     /**
-     * sets the possible images for the {@code Collectible}
-     *
-     * @param piece1 url of image1
-     * @param piece2 url of image2
-     * @param piece3 url of image3
+     * String representation of the {@code ReesesPieces} used for testing
+     * @return String to represent Collectible
      */
-    public void setImages(String piece1, String piece2, String piece3) {
-        this.sprites[0] = piece1;
-        this.sprites[1] = piece2;
-        this.sprites[2] = piece3;
-    }
-
-    /**
-     * @return the sprites
-     */
-    public String[] getSprites() {
-        String[] copy = new String[3];
-        System.arraycopy(sprites, 0, copy, 0, sprites.length);
-        return copy;
-    }
-
-    /**
-     * @param sprites the sprites to set
-     */
-    public void setSprites(String[] sprites) {
-        this.sprites = sprites;
-    }
-
-    /**
-     * sets the image of {@code Collectible}
-     *
-     * @param theImage new image of the {@code Collectible}
-     */
-
-    public void setTheImage(String theImage) {
-        this.theImage = new Image(theImage);
-        this.setHitbox(new Hitbox(this.getLocation(), (int) this.getTheImage().getWidth(), (int) this.getTheImage().getHeight()));
-    }
-
-    /**
-     * gets the image of the {@code Collectible}
-     *
-     * @return the image of the Collectible
-     */
-    public Image getTheImage() {
-        Image copy = new Image(this.theImage.impl_getUrl());
-        return copy;
-    }
-
-    /**
-     * returns height of {@code Collectible}
-     *
-     * @return height of Collectible
-     */
-    public static int getHeight() {
-        return HEIGHT;
-    }
-
-    /**
-     * returns Width of the Collectible
-     *
-     * @return width of {@code Collectible}
-     */
-    public static int getWidth() {
-        return WIDTH;
+    public String toString() {
+    	String stringRep = ("Location: " + this.getLocation().getXcord() + ", " + this.getLocation().getYcord());
+    	return stringRep;
     }
 
     public static void main(String[] args) {
-
         Location testloc = new Location(100, 100);
         Collectible tester = new ReesesPieces(testloc);
         System.out.println("x cord should be 100 is: " + tester.getLocation().getXcord());
         System.out.println("y cord should be 100 is: " + tester.getLocation().getYcord());
+        tester.setLocation(new Location(tester.getLocation().getXcord() + 20, tester.getLocation().getXcord() + 20));
+        System.out.println("x cord should be 120 is: " + tester.getLocation().getXcord());
+        System.out.println("y cord should be 120 is: " + tester.getLocation().getYcord());
 
 
         Location testloc2 = new Location(200, 200);
@@ -185,7 +96,10 @@ public abstract class Collectible {
         a = tester.getHitbox().areColliding(tester2.getHitbox());
         System.out.println("should be true: " + a);
 
+        System.exit(0);
+
 
     }
+
 }
 

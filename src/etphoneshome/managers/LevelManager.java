@@ -1,6 +1,5 @@
 package etphoneshome.managers;
 
-import etphoneshome.UILauncher;
 import etphoneshome.objects.Level;
 import etphoneshome.objects.PhonePieceType;
 
@@ -8,7 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LevelManager {
-
+    
+    private ObstacleManager obstacleManager;
+    private EntityManager entityManager;
+    private CollectiblesManager collectiblesManager;
+    
     /**
      * list of the levels
      */
@@ -28,6 +31,12 @@ public class LevelManager {
      * boolean to check if level is over
      */
     private boolean levelComplete = false;
+    
+    public LevelManager(ObstacleManager obstacleManager, EntityManager entityManager, CollectiblesManager collectiblesManager) {
+        this.obstacleManager = obstacleManager;
+        this.entityManager = entityManager;
+        this.collectiblesManager = collectiblesManager;
+    }
 
     /**
      * add level to the game
@@ -85,12 +94,9 @@ public class LevelManager {
     public void loadLevel(Level level) {
         this.unloadLevel();
         this.currentLevelNum = level.getLevelNum();
-        UILauncher.getObstacleManager().loadObstacles(level);
-        UILauncher.getEntityManager().loadEntities(level);
-        UILauncher.getCollectiblesManager().loadCollectibles(level);
-        UILauncher.getBackgroundManager().loadBackground(level);
-        UILauncher.getGraphicsRepainter().setMinutes((int) Math.floor(level.getTimeLimit()/60));
-        UILauncher.getGraphicsRepainter().setSeconds(level.getTimeLimit()%60);
+        obstacleManager.loadObstacles(level);
+        entityManager.loadEntities(level);
+        collectiblesManager.loadCollectibles(level);
     }
 
     /**
@@ -99,11 +105,9 @@ public class LevelManager {
     public void unloadLevel() {
         for (Level level : this.getLevels()) {
             if (level.getLevelNum() == this.currentLevelNum) {
-                UILauncher.getObstacleManager().clearObstacles();
-                UILauncher.getEntityManager().clearEntities();
-                UILauncher.getCollectiblesManager().clearCollectibles();
-                UILauncher.getGraphicsRepainter().setMinutes(10);
-                UILauncher.getGraphicsRepainter().setMinutes(0);
+                obstacleManager.clearObstacles();
+                entityManager.clearEntities();
+                collectiblesManager.clearCollectibles();
                 this.currentLevelNum = 0;
                 this.levelComplete = false;
             }

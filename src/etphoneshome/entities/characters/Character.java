@@ -2,216 +2,148 @@ package etphoneshome.entities.characters;
 
 import etphoneshome.entities.actor.Actor;
 import etphoneshome.objects.Location;
-
+import etphoneshome.objects.Platform;
 
 /**
  * This is used for a generic character (non-enemy) class. It is derived from the {@code Actor} class.
  */
-
 public abstract class Character extends Actor {
-
     /**
-     * booleans of {@code Character}
-     */
-    private boolean isJumping, isHoldingLeft, isHoldingRight, isHoldingUp, onPlatform, invincible;
-
-    /**
-     * score of {@code Character}
+     * The score associated with the {@code Character}
      */
     private int score = 0;
 
     /**
-     * empty default constructor
+     * Boolean to see if {@code Character} completed all objectives and ready to beat the level
+     */
+    private boolean canWin;
+
+    private Platform standingOnPlatform;
+
+    /**
+     * Default constructor
      */
     public Character() {
+
     }
 
     /**
-     * Constructor with initial Location of {@code Character}
+     * Constructor to set the {@code Location} of {@code Character}
      *
-     * @param location location of {@code Character}
+     * @param location The {@code Location} of {@code Character}
      */
     public Character(Location location) {
         super(location);
     }
 
     /**
-     * Returns true if the {@code Character} is jumping
+     * Adds {@code amount} to the score of the {@code Character}
      *
-     * @return {@code isJumping}
+     * @param amount The amount to add to the score of the {@code Character}
      */
-    public boolean isJumping() {
-        return isJumping;
+    public void addScore(int amount) {
+        this.score += amount;
     }
 
     /**
-     * Updates the {@code isJumping} value
+     * Returns the score of the {@code Character}
      *
-     * @param jumping New isJumping value
-     */
-    public void setJumping(boolean jumping) {
-        isJumping = jumping;
-    }
-
-    /**
-     * Returns true if the user is holding down the left key
-     *
-     * @return {@code isHoldingLeft}
-     */
-    public boolean isHoldingLeft() {
-        return isHoldingLeft;
-    }
-
-    /**
-     * Updates the {@code holdingLeft} value
-     *
-     * @param holdingLeft New holdingLeft value
-     */
-    public void setHoldingLeft(boolean holdingLeft) {
-        isHoldingLeft = holdingLeft;
-        if (holdingLeft == true) {
-            this.setFacingRight(false);
-        }
-    }
-
-    /**
-     * Returns true if the user is holding down the right key
-     *
-     * @return {@code isHoldingRight}
-     */
-    public boolean isHoldingRight() {
-        return isHoldingRight;
-    }
-
-    /**
-     * Updates the {@code holdingRight} value
-     *
-     * @param holdingRight New holdingRight value
-     */
-    public void setHoldingRight(boolean holdingRight) {
-        isHoldingRight = holdingRight;
-    }
-
-    /**
-     * Returns true if the user is holding down the up key
-     *
-     * @return {@code isHoldingUp}
-     */
-    public boolean isHoldingUp() {
-        return isHoldingUp;
-    }
-
-    /**
-     * Updates the {@code holdingUp} value
-     *
-     * @param holdingUp New holdingUp value
-     */
-    public void setHoldingUp(boolean holdingUp) {
-        isHoldingUp = holdingUp;
-    }
-
-    /**
-     * Returns true if the {@code Character} is on a platform
-     *
-     * @return {@code isHoldingRight}
-     */
-    public boolean isOnPlatform() {
-        return onPlatform;
-    }
-
-    /**
-     * Updates the {@code onPlatform} value
-     *
-     * @param onPlatform New onPlatform value
-     */
-    public void setOnPlatform(boolean onPlatform) {
-        this.onPlatform = onPlatform;
-    }
-
-    /**
-     * Return true if the player was recently hurt and is temporarily invincible
-     *
-     * @return invincible value
-     */
-    public boolean isInvincible() {
-        return this.invincible;
-    }
-
-    /**
-     * Updates the invincible variable
-     *
-     * @param invincible New invincible variable
-     */
-    public void setInvincible(boolean invincible) {
-        this.invincible = invincible;
-    }
-
-    /**
-     * Increments the score by the given amount {@code num}
-     *
-     * @param num Value to be added to score
-     */
-    public void addScore(int num) {
-        this.score += num;
-    }
-
-    /**
-     * Returns the current score of the {@code Character}
-     *
-     * @return current score of the {@code Character}
+     * @return The score of the {@code Character}
      */
     public int getScore() {
         return this.score;
     }
 
     /**
-     * Updates the score to a certain value
+     * sets the canWin status of {@code Character}
      *
-     * @param score New score value
+     * @param canWin new canWin status of {@code Character}
      */
-    public void setScore(int score) {
-        this.score = score;
+    public void setCanWin(boolean canWin) {
+        this.canWin = canWin;
+    }
+
+
+    /**
+     * gets the canWin status of {@code Character}
+     *
+     * @return canWIn status of {@code Character}
+     */
+    public boolean getCanWin() {
+        return this.canWin;
+    }
+
+    public void setStandingOnPlatform(Platform platform) {
+        this.standingOnPlatform = platform;
+    }
+
+    public Platform getStandingOnPlatform() {
+        return standingOnPlatform;
     }
 
     //main tests the class methods
-    public static void main(String[] args) {
-        Character c = new ET();
-        //test the getter and setter for isDead
+/*	public static void main(String[] args)
+	{
+        Location l1 = new Location(987,654);
 
-        if (c.getIsDead()) //should be false originally
-        {
-            System.out.println("This should not have been printed. Character should be alive (but is dead here)");
-        } else {
-            System.out.println("Character is alive. This is the correct outcome");
-        }
+        Character c1 = new Character();
+        Character c2 = new Character(l1);
+        Character c3 = new Character(l1);
 
-        c.setIsDead(true);
+        l1.setXcord(111);
+        l1.setYcord(222);
 
-        if (c.getIsDead()) //should be true
-        {
-            System.out.println("Character is dead. This is the correct outcome.");
-        } else {
-            System.out.println("Character is alive. This is not the correct outcome");
-        }
+        System.out.println("Should be 111: " + l1.getXcord());
+        System.out.println("Should be 222: " + l1.getYcord());
 
-        System.out.println("\n");
+        System.out.println("Should be 987: " + c2.getLocation().getXcord());
+        System.out.println("Should be 654: " + c2.getLocation().getYcord());
 
-        //test the getter and setters for location
+        System.out.println("Should be 0: " + c1.getLocation().getXcord());
+        System.out.println("Should be 0: " + c1.getLocation().getYcord());
 
-        Location testLoc;
-        Location placeIntoTestLoc = new Location(123, 234);
+        c1.setHealth(5);
+        c2.setHealth(0);
+        c3.setHealth(-1);
 
-        testLoc = c.getLocation();  //Sets the initial (0,0) location to the testLoc location
+        System.out.println("Should be 5: " + c1.getHealth());
+        System.out.println("Should be 0: " + c2.getHealth());
+        System.out.println("Should be 1: " + c3.getHealth());
 
-        System.out.println("testLoc x coordinate (should be 0): " + testLoc.getXcord());
-        System.out.println("testLoc y coordinate (should be 0): " + testLoc.getYcord());
+        System.out.println("Should be false: " + c1.getIsDead());
+        System.out.println("Should be true: " + c2.getIsDead());
+        System.out.println("Should be false: " + c3.getIsDead());
 
-        c.setLocation(placeIntoTestLoc);    //sets location in c to the new values
+        c3.takeSinglePointOfDamage();
 
-        testLoc = c.getLocation();  //gets the location from c which is now changed
+        System.out.println("Should be true: " + c3.getIsDead());
 
-        System.out.println("testLoc x coordinate (should be 123): " + testLoc.getXcord());
-        System.out.println("testLoc y coordinate (should be 234): " + testLoc.getYcord());
+        c1.takeSinglePointOfDamage();
+        c1.takeSinglePointOfDamage();
+        c1.takeSinglePointOfDamage();
+        c1.takeSinglePointOfDamage();
 
+        System.out.println("Should be false: " + c1.getIsDead());
+
+        c1.takeSinglePointOfDamage();
+
+        System.out.println("Should be true: " + c1.getIsDead());
+
+        c1.setHealth(2);
+
+        System.out.println("Should be false: " + c1.getIsDead());
+
+        c1.setIsDead(true);
+
+        System.out.println("Should be true: " + c1.getIsDead());
+
+        System.out.println("Should be 0: " + c1.getScore());
+        System.out.println("Should be 0: " + c2.getScore());
+        System.out.println("Should be 0: " + c3.getScore());
+
+        c1.addScore(50);
+
+        System.out.println("Should be 50: " + c1.getScore());
     }
+*/
 }

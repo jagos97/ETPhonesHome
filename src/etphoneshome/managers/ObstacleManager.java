@@ -13,7 +13,14 @@ public class ObstacleManager {
      * Using the removeObstacle method removes an obstacle from the list obstacles.
      * Using getObstacleList allows you to return the list of obstacles in its current state.
      */
-    private final List<Obstacle> obstacles = new ArrayList<>();
+    private final static List<Obstacle> obstacles = new ArrayList<>();
+
+    /**
+     * constructor for the class
+     */
+    public ObstacleManager() {
+
+    }
 
     /**
      * method to add obstacle to the list obstacles.

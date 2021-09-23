@@ -1,4 +1,5 @@
-package etphoneshome.player;
+package etphoneshome.objects;
+
 
 /**
  * this class will handle the previous players of the game and the current one for highscore purposes
@@ -72,7 +73,7 @@ public class Player {
 	 * returns a string representation of the {@code Player}
 	 */
 	public String toString() {
-		String a = String.format("%1$-" + 50 + "s", this.getName());
+		String a = String.format("%1$-" + 20 + "s", this.getName());
 		a += this.getScore();
 		
 		return a;
@@ -100,6 +101,4 @@ public class Player {
 		System.out.println(copy.toString());
 	}
 	
-	
-
 }

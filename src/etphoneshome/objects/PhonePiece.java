@@ -1,6 +1,5 @@
 package etphoneshome.objects;
 
-import etphoneshome.graphics.SpriteURL;
 import javafx.scene.image.Image;
 
 /**
@@ -8,31 +7,17 @@ import javafx.scene.image.Image;
  * using getters and setters you get and set the width,height, image, location, hitbox and the type of phone piece
  */
 public class PhonePiece extends Collectible {
-
-    /**
-     * Dimensions of the {@code PhonePiece}
-     */
-    private final static int WIDTH = 30;
-    private final static int HEIGHT = 70;
-
-    /**
-     * string of the image path
-     */
-    private String ImagePath;
     
     /**
      * type of the phone piece
      */
     private PhonePieceType phonePieceType;
 
-
     /**
      * Empty constructor that will set the sprite to the phone Antenna
      */
     public PhonePiece() {
-        super.setImages(SpriteURL.PHONE_ANTENNA.getPath(), SpriteURL.PHONE_CHASSIS.getPath(), SpriteURL.PHONE_KEYPAD.getPath());
         this.phonePieceType = PhonePieceType.ANTENNA;
-        this.setImage(PhonePieceType.ANTENNA);
     }
 
     /**
@@ -43,55 +28,7 @@ public class PhonePiece extends Collectible {
      */
     public PhonePiece(Location location, PhonePieceType phonePieceType) {
         super(location);
-        super.setImages(SpriteURL.PHONE_ANTENNA.getPath(), SpriteURL.PHONE_CHASSIS.getPath(), SpriteURL.PHONE_KEYPAD.getPath());
         this.phonePieceType = phonePieceType;
-        setImage(phonePieceType);
-    }
-
-    /**
-     * Sets the image to something else
-     *
-     * @param index index of the phone piece image
-     */
-    public void setImage(int index) {
-        this.ImagePath = this.getSprites()[index];
-        this.setTheImage(this.ImagePath);
-    }
-
-    /**
-     * Sets the image to something else
-     *
-     * @param type type of phone piece
-     */
-    public void setImage(PhonePieceType type) {
-        this.setImage(type.getIndex());
-    }
-
-    /**
-     * Returns current image of the {@code PhonePiece}
-     *
-     * @return the image of {@code PhonePiece}
-     */
-    public Image getImage() {
-        return new Image(this.ImagePath);
-    }
-
-    /**
-     * Gets width
-     *
-     * @return width
-     */
-    public static int getWidth() {
-        return WIDTH;
-    }
-
-    /**
-     * Gets height
-     *
-     * @return height
-     */
-    public static int getHeight() {
-        return HEIGHT;
     }
 
     /**

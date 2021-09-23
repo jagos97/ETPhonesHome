@@ -3,9 +3,7 @@ package etphoneshome.objects;
 import etphoneshome.entities.enemies.Enemy;
 import etphoneshome.entities.enemies.Police;
 import etphoneshome.entities.enemies.Scientist;
-import etphoneshome.graphics.SpriteURL;
 import javafx.embed.swing.JFXPanel;
-import javafx.scene.image.Image;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,15 +19,10 @@ public class Level {
     /**
      * Arrays of the objects in the level and the number of the level and the endcord to win the game
      */
-    private int levelNum, endCord, timeLimit;
-    private String backgroundFilePath = SpriteURL.BACKGROUND.getPath();
+    private int levelNum, timeLimit;
     private List<Obstacle> obstacles = new ArrayList<>();
     private List<Enemy> enemies = new ArrayList<>();
     private List<Collectible> phonePieces = new ArrayList<>();
-
-    private final Image level1Image = new Image(SpriteURL.LEVEL1.getPath());
-    private final Image level2Image = new Image(SpriteURL.LEVEL2.getPath());
-    private final Image Level3Image = new Image(SpriteURL.LEVEL3.getPath());
 
     private JFXPanel jfxPanel = new JFXPanel();
 
@@ -40,10 +33,6 @@ public class Level {
      */
     public Level(Level level) {
         this.levelNum = level.getLevelNum();
-
-        this.backgroundFilePath = level.getBackgroundFilePath();
-
-        this.endCord = level.getEndCord();
 
         this.timeLimit = level.getTimeLimit();
 
@@ -71,7 +60,7 @@ public class Level {
         //gets the file
         File file = new File("levels" + File.separator + levelName + ".txt");
         if (!file.exists()) {
-            file = new File("ET Phones Home" + File.separator + "src" + File.separator + "levels" + File.separator + levelName + ".txt");
+            file = new File("ET Phones Home - Text Based" + File.separator + "src" + File.separator + "levels" + File.separator + levelName + ".txt");
         }
 
         //reads the file
@@ -87,19 +76,9 @@ public class Level {
                     this.levelNum = Integer.valueOf(line.replace("level-num: ", ""));
                 }
 
-                // path of background sprite
-                if (line.startsWith("background-sprite: ")) {
-                    this.backgroundFilePath = line.replace("background-sprite: ", "");
-                }
-
                 // time limit of level
                 if (line.startsWith("time-limit: ")) {
                     this.timeLimit = Integer.valueOf(line.replace("time-limit: ", ""));
-                }
-
-                //end coordinate of level
-                if (line.startsWith("end-cord: ")) {
-                    this.endCord = Integer.valueOf(line.replace("end-cord: ", ""));
                 }
 
                 // platforms of level
@@ -118,7 +97,7 @@ public class Level {
                     lineNum++;
                     int xCord = Integer.valueOf(scanner.nextLine().replace("\t", "  ").replace("    x-cord: ", ""));
                     lineNum++;
-                    int yCord = Integer.valueOf(scanner.nextLine().replace("\t", "  ").replace("    y-cord: ", "")) - (int) new Police().getRightEntitySprite().getHeight();
+                    int yCord = Integer.valueOf(scanner.nextLine().replace("\t", "  ").replace("    y-cord: ", ""));
                     Police police = (new Police(new Location(xCord, yCord)));
                     this.enemies.add(police);
                 }
@@ -128,7 +107,7 @@ public class Level {
                     lineNum++;
                     int xCord = Integer.valueOf(scanner.nextLine().replace("\t", "  ").replace("    x-cord: ", ""));
                     lineNum++;
-                    int yCord = Integer.valueOf(scanner.nextLine().replace("\t", "  ").replace("    y-cord: ", "")) - (int) new Scientist().getRightEntitySprite().getHeight();
+                    int yCord = Integer.valueOf(scanner.nextLine().replace("\t", "  ").replace("    y-cord: ", ""));
                     this.enemies.add(new Scientist(new Location(xCord, yCord)));
                 }
 
@@ -143,7 +122,7 @@ public class Level {
                     lineNum++;
                     int xCord = Integer.valueOf(scanner.nextLine().replace("\t", "  ").replace("    x-cord: ", ""));
                     lineNum++;
-                    int yCord = Integer.valueOf(scanner.nextLine().replace("\t", "  ").replace("    y-cord: ", "")) - (int) new PhonePiece(new Location(0, 0), phonePieceType).getHeight();
+                    int yCord = Integer.valueOf(scanner.nextLine().replace("\t", "  ").replace("    y-cord: ", ""));
                     this.phonePieces.add(new PhonePiece(new Location(xCord, yCord), phonePieceType));
                 }
             }
@@ -163,24 +142,6 @@ public class Level {
      */
     public int getLevelNum() {
         return this.levelNum;
-    }
-
-    /**
-     * Returns the backgroundFilePath paired with the {@code Level}
-     *
-     * @return backgroundFilePath
-     */
-    public String getBackgroundFilePath() {
-        return this.backgroundFilePath;
-    }
-
-    /**
-     * get the end coordinate of the level
-     *
-     * @return endCord of {@code Level}
-     */
-    public int getEndCord() {
-        return this.endCord;
     }
 
     /**
@@ -217,24 +178,6 @@ public class Level {
      */
     public int getTimeLimit() {
         return this.timeLimit;
-    }
-
-    /**
-     * Returns the image associated with the level
-     *
-     * @param i the level number
-     * @return levelImage
-     */
-    public Image getImage(int i) {
-        switch (i) {
-            case 1:
-                return this.level1Image;
-            case 2:
-                return this.level2Image;
-            case 3:
-                return this.Level3Image;
-        }
-        return this.level1Image;
     }
 
 }

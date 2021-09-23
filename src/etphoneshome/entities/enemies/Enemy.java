@@ -10,95 +10,87 @@ import etphoneshome.objects.Platform;
 
 public abstract class Enemy extends Actor {
 
-    /**
-     * The {@code Platform} that the {@code Enemy} is currently standing on
-     */
     private Platform standingOnPlatform;
 
     /**
-     * default constructor that sets FacingRight to false
+     * Default constructor
      */
     public Enemy() {
-        this.setFacingRight(false);
+
     }
 
     /**
-     * Constructor that sets the initial location of the {@code Enemy}
+     * Constructor to set the {@code Enemy}'s {@code Location}
      *
-     * @param location initial location of {@code Enemy}
+     * @param location The {@code Enemy}'s {@code Location}
      */
     public Enemy(Location location) {
         super(location);
-        this.setFacingRight(false);
     }
 
-    /**
-     * Create copy of enemy
-     *
-     * @param enemy Enemy to copy from
-     */
-    public Enemy(Enemy enemy) {
-        this(enemy.getLocation());
-    }
-
-    /**
-     * Sets the platform that the {@code Enemy} is currently standing on
-     * @param platform The platform that the {@code Enemy} is currently standing on
-     */
     public void setStandingOnPlatform(Platform platform) {
         this.standingOnPlatform = platform;
     }
 
-    /**
-     * Returns the platform that the {@code Enemy} is currently standing on
-     * @return The platform that the {@code Enemy} is currently standing on
-     */
     public Platform getStandingOnPlatform() {
-        return this.standingOnPlatform;
+        return standingOnPlatform;
     }
 
     //main tests the class methods
-    public static void main(String[] args) {
-        Location initialLoc = new Location(0, 0);    //Set the enemy class to a location of 0,0 for testing
-        Enemy c = new Police(initialLoc);
+/*    public static void main(String[] args)
+    {
+        Location l1 = new Location(987,654);
 
-        c.setLocation(initialLoc);
-        //test the getter and setter for isDead
+        Enemy a1 = new Enemy();
+        Enemy a2 = new Enemy(l1);
+        Enemy a3 = new Enemy(l1);
 
-        if (c.getIsDead()) //should be false originally
-        {
-            System.out.println("This should not have been printed. Enemy should be alive (but is dead here)");
-        } else {
-            System.out.println("Enemy is alive. This is the correct outcome");
-        }
+        l1.setXcord(111);
+        l1.setYcord(222);
 
-        c.setIsDead(true);
+        System.out.println("Should be 111: " + l1.getXcord());
+        System.out.println("Should be 222: " + l1.getYcord());
 
-        if (c.getIsDead()) //should be true
-        {
-            System.out.println("Enemy is dead. This is the correct outcome.");
-        } else {
-            System.out.println("Enemy is alive. This is not the correct outcome");
-        }
+        System.out.println("Should be 987: " + a2.getLocation().getXcord());
+        System.out.println("Should be 654: " + a2.getLocation().getYcord());
 
-        System.out.println("\n");
+        System.out.println("Should be 0: " + a1.getLocation().getXcord());
+        System.out.println("Should be 0: " + a1.getLocation().getYcord());
 
-        //test the getter and setters for location
+        a1.setHealth(5);
+        a2.setHealth(0);
+        a3.setHealth(-1);
 
-        Location testLoc;
-        Location placeIntoTestLoc = new Location(987, 233);
+        System.out.println("Should be 5: " + a1.getHealth());
+        System.out.println("Should be 0: " + a2.getHealth());
+        System.out.println("Should be 1: " + a3.getHealth());
 
-        testLoc = c.getLocation();  //Sets the initial (0,0) location to the testLoc location
+        System.out.println("Should be false: " + a1.getIsDead());
+        System.out.println("Should be true: " + a2.getIsDead());
+        System.out.println("Should be false: " + a3.getIsDead());
 
-        System.out.println("testLoc x coordinate (should be 0): " + testLoc.getXcord());
-        System.out.println("testLoc y coordinate (should be 0): " + testLoc.getYcord());
+        a3.takeSinglePointOfDamage();
 
-        c.setLocation(placeIntoTestLoc);    //sets location in c to the new values
+        System.out.println("Should be true: " + a3.getIsDead());
 
-        testLoc = c.getLocation();  //gets the location from c which is now changed
+        a1.takeSinglePointOfDamage();
+        a1.takeSinglePointOfDamage();
+        a1.takeSinglePointOfDamage();
+        a1.takeSinglePointOfDamage();
 
-        System.out.println("testLoc x coordinate (should be 987): " + testLoc.getXcord());
-        System.out.println("testLoc y coordinate (should be 233): " + testLoc.getYcord());
+        System.out.println("Should be false: " + a1.getIsDead());
 
+        a1.takeSinglePointOfDamage();
+
+        System.out.println("Should be true: " + a1.getIsDead());
+
+        a1.setHealth(2);
+
+        System.out.println("Should be false: " + a1.getIsDead());
+
+        a1.setIsDead(true);
+
+        System.out.println("Should be true: " + a1.getIsDead());
     }
+*/
 }
